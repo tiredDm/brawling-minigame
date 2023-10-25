@@ -1,0 +1,67 @@
+/*BASE NONSENSE ----------------------*/
+.container{
+    height: 100vh;
+    width: 100vw;
+}
+
+body{
+    margin: 0px;
+}
+
+/* ROUND COUNTER-------------------------------------*/
+
+.roundCounter{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.actualCounter{
+    display: flex;
+}
+
+.actualCounter h2{
+    margin: .4em
+}
+
+
+/* ROUND WIN BAR -----------------------------------------*/
+
+.roundWinBar{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2vw;
+}
+
+
+.bar{
+    height: 12vw;
+    width: 5px;
+    background-color: grey;
+}
+
+.player{
+    display: flex;
+}
+
+.winCounter{
+    width: 5vw;
+    height: 5vw;
+    border: 5px solid black;
+}
+
+/* ACTION PICKER -----------------------------------------*/
+
+.actionPickers{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.picker{
+    display: grid;
+    height: 20vh;
+    width: 20vw;
+    background-color: slategray;
+}
