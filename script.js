@@ -57,7 +57,8 @@ function processSubmit(submitter){
     }
     gameState += 1;
     if(gameState % 2 == 0){
-        evaluateRound();
+        let allRolls = [l_roll1.value, r_roll1.value, l_roll2.value, r_roll2.value, l_roll3.value, r_roll3.value];
+        evaluateRound(allRolls);
         //CLear all Roll Areas
         r_roll1.value='';
         r_roll2.value='';
@@ -69,37 +70,94 @@ function processSubmit(submitter){
 
 }
 
-function evaluateRound(){ //input array of values... then for each value do shit.. have the six roll as parameters.. then create a loop over each.. in which you order divs made and inputs..
+function evaluateRound(rolls){ //input array of values... then for each value do shit.. have the six roll as parameters.. then create a loop over each.. in which you order divs made and inputs..
     console.log('Pizza Time');
-
-
-
+    
+    //POINT COUNTERS
+    let lPT = 0;
+    let rPT = 0;
 
     /* ADDING THE POPUP */
     let endOfRoundScreen = document.createElement('div');
     endOfRoundScreen.classList.add('endOfRound');
     
+    /**Filling Up the Popup with Roll Calcuations--------------------------------- */
+    for(let i = 0; i < 6; i++){
+        
+        
+        let points = document.createElement('div');
+        if(rolls[i] == '20'){
+            points.innerHTML = '1';
+        } else {
+            points.innerHTML = '0';
+        }
+        let roll = document.createElement('div');
+        roll.innerHTML = rolls[i];
+
+        if(i%2 == 0){
+            endOfRoundScreen.appendChild(points);
+            endOfRoundScreen.appendChild(roll);
+            lPT += Number(points.innerHTML);
+        } else {
+            endOfRoundScreen.appendChild(roll);
+            endOfRoundScreen.appendChild(points);
+            rPT += Number(points.innerHTML);
+        }
+    }
+
+    /**TALLYING UP TOTALS.. --------------------------------1.2.3.4.*/
+    let lRollTotal = document.createElement('div');
+    let lPointTotal = document.createElement('div');;
+    let rRollTotal = document.createElement('div');;
+    let rPointTotal = document.createElement('div');;
+
+    //rtv is Roll Total Value
+    let lRTV = Number(rolls[0])+Number(rolls[2])+Number(rolls[4]);
+    let rRTV = Number(rolls[1]) + Number(rolls[3]) + Number(rolls[5]);
+  
+    if(lRTV > rRTV){
+        lPT += Math.floor((lRTV - rRTV)/10);
+    } else {
+        rPT += Math.floor((rRTV - lRTV)/10);
+    }
+
+    lRollTotal.innerHTML =  lRTV;
+    lPointTotal.innerHTML = lPT;
+    rRollTotal.innerHTML =  rRTV;
+    rPointTotal.innerHTML = rPT;
     
+    endOfRoundScreen.appendChild(lPointTotal);
+    endOfRoundScreen.appendChild(lRollTotal);
+    endOfRoundScreen.appendChild(rRollTotal);
+    endOfRoundScreen.appendChild(rPointTotal);
+    
+
+
     let endRoundButton = document.createElement('button')
     endRoundButton.innerHTML = 'End Round'
     endRoundButton.addEventListener('click', () => {
-        finalizeRound();
+        finalizeRound(lPointTotal.innerHTML, rPointTotal.innerHTML);
     });
 
     //Populate End Of Round POPUP..
-    let div = document.createElement('div');
-    div.innerHTML = '0';
+    
 
-    endOfRoundScreen.appendChild(div);
+    
     endOfRoundScreen.appendChild(endRoundButton)
     container.appendChild(endOfRoundScreen);
 }
 
-function finalizeRound(){
+function finalizeRound(leftPointTotal, rightPointTotal){
     console.log('RoundFinalized');
+    /* Checks if Game Is Over */
     if(gameState == 10){
         endGame();
     }
+
+    /* Adds Points for the Rounds onto the windows */
+    winCounters[(gameState/2)-1].innerHTML = leftPointTotal
+    winCounters[10-(gameState/2)].innerHTML = rightPointTotal
+    /* Removes popups */
     container.removeChild(container.lastChild);
     container.removeChild(container.lastChild);
     container.removeChild(container.lastChild);
