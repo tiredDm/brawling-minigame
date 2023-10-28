@@ -198,8 +198,8 @@ function evaluateRound(rolls){ //input array of values... then for each value do
     //rtv is Roll Total Value
     let lRTV = Number(rolls[0])+Number(rolls[2])+Number(rolls[4]) + (Number(lBonus)*3);
     let rRTV = Number(rolls[1]) + Number(rolls[3]) + Number(rolls[5]) + (Number(rBonus)*3) ;
-  
-    
+    lRTV -= rAC.value;
+    rRTV -= lAC.value;
 
     if(lRTV > rRTV){
         lPT += Math.floor((lRTV - rRTV)/10);
@@ -226,10 +226,19 @@ function evaluateRound(rolls){ //input array of values... then for each value do
     });
 
     //Populate End Of Round POPUP..
+    let con_save = 'Con Save: ';
     
+    if(rPT < lPT){
+        con_save += 10+(3*lPT); 
+    } else{
+        con_save += 10+(3*rPT);
+    }
 
-    
-    endOfRoundScreen.appendChild(endRoundButton)
+    let con_save_div = document.createElement('div');
+    con_save_div.innerHTML = con_save;
+
+    endOfRoundScreen.appendChild(con_save_div);
+    endOfRoundScreen.appendChild(endRoundButton);
     container.appendChild(endOfRoundScreen);
 }
 
