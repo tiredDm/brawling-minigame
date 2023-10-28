@@ -245,9 +245,7 @@ function evaluateRound(rolls){ //input array of values... then for each value do
 function finalizeRound(leftPointTotal, rightPointTotal){
     console.log('RoundFinalized');
     /* Checks if Game Is Over */
-    if(gameState == 10){
-        endGame();
-    }
+   
 
     /* Adds Points for the Rounds onto the windows */
     winCounters[(gameState/2)-1].innerHTML = leftPointTotal
@@ -256,9 +254,28 @@ function finalizeRound(leftPointTotal, rightPointTotal){
     container.removeChild(container.lastChild);
     container.removeChild(container.lastChild);
     container.removeChild(container.lastChild);
+
+    if(gameState == 10){
+        endGame();
+    }
 }
 
 function endGame(){
     console.log('Game Over Bro')
+    let endOfGameScreen = document.createElement('div');
+    endOfGameScreen.classList.add('endOfGame');
+    endOfGameScreen.innerHTML = 'GAME OVER: '
+    
+    let left = 0;
+    let right = 0;
+    for(let i = 0; i < 5; i++){
+        left += Number(winCounters[i].innerHTML);
+    }
+    for(let i = 5; i < 10; i++){
+        right += Number(winCounters[i].innerHTML);
+    }
+
+    endOfGameScreen.innerHTML += left + ' vs ' + right; 
+    container.appendChild(endOfGameScreen);
 }
 

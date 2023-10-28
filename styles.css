@@ -167,3 +167,21 @@ body{
 .selected{
   background-color: white;  
 }
+
+.endOfRound div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.endOfGame{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(19, 19, 19, 0.61);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: xx-large;
+}
