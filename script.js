@@ -3,8 +3,21 @@ const winCounters = document.querySelectorAll('.winCounter');
 const leftSubmit = document.querySelector('.submit-button');
 const rightSubmit = document.querySelector('.r-submit-button');
 const container = document.querySelector('.container');
+const actions =   document.querySelectorAll('.action');  
+
+
 //Add Event Listeners to the winCounters..
 //for(let i = 0; i < 10; i++){} Technically speaking if we do the math per turn we won't need this..
+
+//STAT GRABBers..
+const lS = document.querySelector('#str_modifier');
+const lD = document.querySelector('#dex_modifier');
+const lC = document.querySelector('#con_modifier');
+const lAC = document.querySelector('#ac');
+const rS = document.querySelector('#r_str_modifier');
+const rD = document.querySelector('#r_dex_modifier');
+const rC = document.querySelector('#r_con_modifier');
+const rAC = document.querySelector('#r_ac');
 
 let gameState = 0; //0 means no one has submitted, 1 means one person has, 2 means both has, and 3 means game over..
 
@@ -14,6 +27,32 @@ let rCurrentAction;
 function addWin(points){
     //Have a version for Right and Left..
     winCounters[0].innerHTML = points;
+}
+
+//Action Event Listners..
+for(let i = 0; i < 8; i++){
+    actions[i].addEventListener('click', () => {
+       selectAction(actions[i],i);
+    });
+}
+
+//ActionSection Function
+function selectAction(action, locationIndex){
+    if(locationIndex < 4){
+        for(let i = 0; i < 4; i++){
+            actions[i].classList.remove('selected');
+        }
+        action.classList.add('selected');
+        lCurrentAction = locationIndex;
+        console.log(lCurrentAction);
+    } else {
+        for(let i = 4; i < 8; i++){
+            actions[i].classList.remove('selected');
+        }
+        action.classList.add('selected');
+        rCurrentAction = locationIndex;
+        console.log(rCurrentAction);
+    }
 }
 
 
@@ -81,6 +120,49 @@ function evaluateRound(rolls){ //input array of values... then for each value do
     let endOfRoundScreen = document.createElement('div');
     endOfRoundScreen.classList.add('endOfRound');
     
+    //Modifiers..
+    let lBonus = 0;
+    let rBonus = 0;
+
+    switch(lCurrentAction){
+        case 0: 
+            lBonus = Number(lS.value);
+            break; 
+        case 1:
+            lBonus = Number(lD.value);
+            break;
+        case 2: 
+            lBonus = Number(lC.value);
+    }
+
+    switch(rCurrentAction%4){
+        case 0: 
+            rBonus = Number(rS.value);
+            break; 
+        case 1:
+            rBonus = Number(rD.value);
+            break;
+        case 2: 
+            rBonus = Number(rC.value);
+    }
+
+    console.log(lBonus);
+    console.log(rBonus);
+
+    //calculate who has.. the advantage/ proficiney..
+    if(lCurrentAction == '3' || rCurrentAction == '7' || rCurrentAction == lCurrentAction){
+        //No advantage don't add proficieny...
+    } else {
+        //we figure out who the person with the advantage... and add it to the "bonus modifier"
+        //Strong > Defensive | Fast > Strong | Defensive > Fast
+        if(Number(lCurrentAction) == (Number(rCurrentAction)%4)+1 || (lCurrentAction == 0 && (Number(rCurrentAction)%4) == 2)){
+            lBonus += 2;
+        } else if ((Number(rCurrentAction)%4) == (Number(lCurrentAction))+1 || (lCurrentAction == 2 && Number(rCurrentAction) == 4)) {
+            rBonus += 2;
+        }
+
+    }   
+
     /**Filling Up the Popup with Roll Calcuations--------------------------------- */
     for(let i = 0; i < 6; i++){
         
@@ -95,10 +177,12 @@ function evaluateRound(rolls){ //input array of values... then for each value do
         roll.innerHTML = rolls[i];
 
         if(i%2 == 0){
+            roll.innerHTML = Number(roll.innerHTML) + lBonus; 
             endOfRoundScreen.appendChild(points);
-            endOfRoundScreen.appendChild(roll);
+            endOfRoundScreen.appendChild(roll) ;
             lPT += Number(points.innerHTML);
         } else {
+            roll.innerHTML = Number(roll.innerHTML) + rBonus;
             endOfRoundScreen.appendChild(roll);
             endOfRoundScreen.appendChild(points);
             rPT += Number(points.innerHTML);
@@ -107,14 +191,16 @@ function evaluateRound(rolls){ //input array of values... then for each value do
 
     /**TALLYING UP TOTALS.. --------------------------------1.2.3.4.*/
     let lRollTotal = document.createElement('div');
-    let lPointTotal = document.createElement('div');;
-    let rRollTotal = document.createElement('div');;
-    let rPointTotal = document.createElement('div');;
+    let lPointTotal = document.createElement('div');
+    let rRollTotal = document.createElement('div');
+    let rPointTotal = document.createElement('div');
 
     //rtv is Roll Total Value
-    let lRTV = Number(rolls[0])+Number(rolls[2])+Number(rolls[4]);
-    let rRTV = Number(rolls[1]) + Number(rolls[3]) + Number(rolls[5]);
+    let lRTV = Number(rolls[0])+Number(rolls[2])+Number(rolls[4]) + (Number(lBonus)*3);
+    let rRTV = Number(rolls[1]) + Number(rolls[3]) + Number(rolls[5]) + (Number(rBonus)*3) ;
   
+    
+
     if(lRTV > rRTV){
         lPT += Math.floor((lRTV - rRTV)/10);
     } else {

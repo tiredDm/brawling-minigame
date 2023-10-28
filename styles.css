@@ -163,3 +163,7 @@ body{
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
     grid-template-columns: 4fr 5fr 5fr 4fr; 
 }
+
+.selected{
+  background-color: white;  
+}
