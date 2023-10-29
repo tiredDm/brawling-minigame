@@ -1,13 +1,155 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/main.js"></script>
-  </body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="script.js" defer></script>
+        <link rel="stylesheet" href="styles.css">
+        <link rel="icon" type="image/svg" href="dice-d20-solid.svg"/>
+        <title>Brawling Minigame</title>
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="roundCounter">
+                ROUND
+                <div class="actualCounter">
+                    <h2>1</h2>
+                    <h2>2</h2>
+                    <h2>3</h2>
+                    <h2>4</h2>
+                    <h2>5</h2>
+                    <h2>OT</h2>
+                </div>
+            </div>
+            <div class="roundWinBar">
+                <div class="left player">
+                    <div class="winCounter"></div>
+                    <div class="winCounter"></div>
+                    <div class="winCounter"></div>
+                    <div class="winCounter"></div>
+                    <div class="winCounter"></div>
+                </div>
+                <div class="bar"></div>
+                <div class="right player">
+                    <div class="winCounter"></div>
+                    <div class="winCounter"></div>
+                    <div class="winCounter"></div>
+                    <div class="winCounter"></div>
+                    <div class="winCounter"></div>
+                </div>
+            </div>
+            <div class="actionPickers">
+                <div class="left picker">
+                    <div class="strong action">
+                        Strong
+                        <img class="actionIcon" src="img/actions/weightlifter-frontal-silhouette-svgrepo-com.svg" alt="strong action">
+                    </div>
+                    <div class="fast action" >
+                        Fast
+                        <img class="actionIcon" src="img/actions/runer-silhouette-running-fast-svgrepo-com.svg" alt="fast action">
+                    </div>
+                    <div class="defensive action">
+                        Defensive
+                        <img class="actionIcon" src="img/actions/shield-svgrepo-com.svg" alt="defensive action">
+                    </div>
+
+                    <div class="taunt action">
+                        Taunt
+                        <img class="actionIcon" src="img/actions/hand-middle-finger-svgrepo-com.svg" alt="taunt action">
+                    </div>
+                </div>
+
+                
+                <div class="right picker">
+                    <div class="strong action">
+                        Strong
+                        <img class="actionIcon" src="img/actions/weightlifter-frontal-silhouette-svgrepo-com.svg" alt="strong action">
+                    </div>
+                    <div class="fast action" >
+                        Fast
+                        <img class="actionIcon" src="img/actions/runer-silhouette-running-fast-svgrepo-com.svg" alt="fast action">
+                    </div>
+                    <div class="defensive action">
+                        Defensive
+                        <img class="actionIcon" src="img/actions/shield-svgrepo-com.svg" alt="defensive action">
+                    </div>
+
+                    <div class="taunt action">
+                        Taunt
+                        <img class="actionIcon" src="img/actions/hand-middle-finger-svgrepo-com.svg" alt="taunt action">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="statsAndInput">
+                <div class="left character">
+                    <div class="strength stat">
+                        STR MOD
+                        <input class="input" type="number" id="str_modifier" name="str_modifier" >
+                    </div>
+                    <div class="dexterity stat">
+                        DEX MOD
+                        <input class="input" type="number" id="dex_modifier" name="dex_modifier">
+                    </div>
+                    <div class="constitution stat">
+                        CON MOD
+                        <input class="input" type="number" id="con_modifier" name="con_modifier">
+                    </div>
+                    <div class="roll one">
+                        ROLL 1
+                        <input class="input" type="number" id="roll_one" name="roll_one">
+                    </div>
+                    <div class="roll two">
+                        ROLL 2
+                        <input class="input" type="number" id="roll_two" name="roll_two">
+                    </div>
+                    <div class="roll three">
+                        ROLL 3
+                        <input class="input" type="number" id="roll_three" name="roll_three">
+                    </div>
+                    <div class="ac stat">
+                        AC:
+                        <input class="input" type="number" id="ac" name="ac">
+                    </div>
+                    <button class="submit-button">Submit</button>
+                </div>
+                <div class="right character">
+                    <div class="strength stat">
+                        STR MOD
+                        <input class="input" type="number" id="r_str_modifier" name="str_modifier">
+                    </div>
+                    <div class="dexterity stat">
+                        DEX MOD
+                        <input class="input" type="number" id="r_dex_modifier" name="dex_modifier">
+                    </div>
+                    <div class="constitution stat">
+                        CON MOD
+                        <input class="input" type="number" id="r_con_modifier" name="con_modifier">
+                    </div>
+                    <div class="roll one">
+                        ROLL 1
+                        <input class="input" type="number" id="r_roll_one" name="roll_one">
+                    </div>
+                    <div class="roll two">
+                        ROLL 2
+                        <input class="input" type="number" id="r_roll_two" name="roll_two">
+                    </div>
+                    <div class="roll three">
+                        ROLL 3
+                        <input class="input" type="number" id="r_roll_three" name="roll_three">
+                    </div>
+                    <div class="ac stat">
+                        AC:
+                        <input class="input" type="number" id="r_ac" name="ac">
+                    </div>
+                    <button class="r-submit-button">Submit</button>
+                </div>
+            </div>
+
+            <div class="footer"></div>
+        </div>
+        
+    </body>
 </html>
