@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 //for each winCounter.. Add Event Listener -> Event listner has div as a parameter, puts a 
 const winCounters = document.querySelectorAll('.winCounter');
 const leftSubmit = document.querySelector('.submit-button');
@@ -279,3 +281,64 @@ function endGame(){
     container.appendChild(endOfGameScreen);
 }
 
+//---------------------------THREE JS SHINENGANS-----------------------------------------------------------------------------------------------------------------------
+
+//We Need a 1. Scene ---2. Camera  ----3. Renderer
+
+//The Scene is a like a container that holds all your objects cameras and lights..
+
+const scene = new THREE.Scene();
+
+//We're using a Persepctive Camera
+//Parameters (Field of View, Aspect Ratio, View Frustrum A, View Frustrum B)
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+
+//renderder
+const renderer = new THREE.WebGL1Renderer({
+    canvas: document.querySelector('#bg'),
+});
+
+//set renderer pixel ratio
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setSize(window.innerWidth, window.innerHeight);
+camera.position.setZ(30);
+
+renderer.render(scene, camera);
+
+//Now Lets add an Object.. There are three things we need when adding an object
+//1. Geometry -> A set of vectors that define the object itself
+//2. Material -> Wrapping Paper for Geometry.. Basic Materials require no light source
+//3. Mesh -> Geometry and Matieral
+
+const geometry = new THREE.IcosahedronGeometry(3,0);
+const material = new THREE.MeshStandardMaterial({color: 0xcc2525});
+const d20 = new THREE.Mesh(geometry,material);
+
+scene.add(d20);
+
+//Lighting...(Point Light)
+const pointLight = new THREE.PointLight(0xf0e65d) //0x is hexadecimal literal..
+pointLight.position.set(5,5,5)
+pointLight.power = 400; //Ok this is really important wtf
+
+const pointLightHelper = new THREE.PointLightHelper(pointLight);
+scene.add(pointLightHelper);
+
+//Lighting Ambient Light
+const ambientLight = new THREE.AmbientLight(0x58427d); //more of a purplish blue
+scene.add(ambientLight, pointLight);
+
+
+//Instead of calling the Render method over and over again, we can make a recursive function to do so
+function animate(){
+    requestAnimationFrame(animate);
+
+    //d20 rotation
+    //d20.rotation.x +=.01;
+    d20.rotateX(.01);
+    d20.rotateY(.005);
+    d20.rotateZ(.01);
+    renderer.render(scene, camera);
+}
+
+animate();

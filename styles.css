@@ -4,6 +4,8 @@
     width: 100vw;
     display: flex;
     flex-direction: column;
+    /*Position Absolute puts the container infront of the Background 3d canvas*/
+    /*position: absolute; */
 }
 
 body{
@@ -184,4 +186,10 @@ body{
     align-items: center;
     justify-content: center;
     font-size: xx-large;
+}
+
+canvas{
+    position: fixed;
+    left: 0;
+    top: 0;
 }
