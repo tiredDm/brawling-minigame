@@ -1,5 +1,9 @@
 import * as THREE from 'three';
 
+//Post Processing stuff
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPixelatedPass } from 'three/addons/postprocessing/RenderPixelatedPass.js';
+
 //for each winCounter.. Add Event Listener -> Event listner has div as a parameter, puts a 
 const winCounters = document.querySelectorAll('.winCounter');
 const leftSubmit = document.querySelector('.submit-button');
@@ -303,14 +307,14 @@ renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 camera.position.setZ(30);
 
-renderer.render(scene, camera);
+//renderer.render(scene, camera); // unnesscary code with post processing
 
 //Now Lets add an Object.. There are three things we need when adding an object
 //1. Geometry -> A set of vectors that define the object itself
 //2. Material -> Wrapping Paper for Geometry.. Basic Materials require no light source
 //3. Mesh -> Geometry and Matieral
 
-const geometry = new THREE.IcosahedronGeometry(3,0);
+const geometry = new THREE.IcosahedronGeometry(4,0);
 const material = new THREE.MeshStandardMaterial({color: 0xcc2525});
 const d20 = new THREE.Mesh(geometry,material);
 
@@ -329,16 +333,16 @@ const ambientLight = new THREE.AmbientLight(0x58427d); //more of a purplish blue
 scene.add(ambientLight, pointLight);
 
 
+//Post Processing Code
+const composer = new EffectComposer (renderer);
+const pixelPass = new RenderPixelatedPass(4, scene, camera);
+composer.addPass( pixelPass);
+
 //Instead of calling the Render method over and over again, we can make a recursive function to do so
 function animate(){
     requestAnimationFrame(animate);
-
-    //d20 rotation
-    //d20.rotation.x +=.01;
-    d20.rotateX(.01);
-    d20.rotateY(.005);
-    d20.rotateZ(.01);
-    renderer.render(scene, camera);
+    d20.rotation.x += .1;
+    composer.render();
 }
 
 animate();
