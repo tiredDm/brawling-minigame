@@ -1,8 +1,9 @@
 import * as THREE from 'three';
-
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 //Post Processing stuff
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPixelatedPass } from 'three/addons/postprocessing/RenderPixelatedPass.js';
+
 
 //for each winCounter.. Add Event Listener -> Event listner has div as a parameter, puts a 
 const winCounters = document.querySelectorAll('.winCounter');
@@ -325,8 +326,12 @@ const pointLight = new THREE.PointLight(0xf0e65d) //0x is hexadecimal literal..
 pointLight.position.set(5,5,5)
 pointLight.power = 400; //Ok this is really important wtf
 
+//HELPERS----------
 const pointLightHelper = new THREE.PointLightHelper(pointLight);
-scene.add(pointLightHelper);
+const gridHelper = new THREE.GridHelper(200,50);
+scene.add(pointLightHelper, gridHelper);
+
+const controls = new OrbitControls(camera, renderer.domElement);
 
 //Lighting Ambient Light
 const ambientLight = new THREE.AmbientLight(0x58427d); //more of a purplish blue
@@ -335,13 +340,14 @@ scene.add(ambientLight, pointLight);
 
 //Post Processing Code
 const composer = new EffectComposer (renderer);
-const pixelPass = new RenderPixelatedPass(4, scene, camera);
+const pixelPass = new RenderPixelatedPass(2, scene, camera);
 composer.addPass( pixelPass);
 
 //Instead of calling the Render method over and over again, we can make a recursive function to do so
 function animate(){
     requestAnimationFrame(animate);
     d20.rotation.x += .1;
+    controls.update();
     composer.render();
 }
 
