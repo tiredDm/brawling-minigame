@@ -316,7 +316,7 @@ camera.position.setZ(30);
 //2. Material -> Wrapping Paper for Geometry.. Basic Materials require no light source
 //3. Mesh -> Geometry and Matieral
 
-const geometry = new THREE.IcosahedronGeometry(4,0);
+const geometry = new THREE.IcosahedronGeometry(1,0);
 const material = new THREE.MeshStandardMaterial({color: 0xcc2525});
 const d20 = new THREE.Mesh(geometry,material);
 
@@ -324,8 +324,10 @@ scene.add(d20);
 
 //Lighting...(Point Light)
 const pointLight = new THREE.PointLight(0xf0e65d) //0x is hexadecimal literal..
-pointLight.position.set(5,5,5)
-pointLight.power = 700; //Ok this is really important wtf
+pointLight.position.set(15,15,5)
+pointLight.power = 10000; //Ok this is really important wtf
+pointLight.intensity = 100; 
+pointLight.decay = 1;
 
 //HELPERS---------- & ORBIT CONTROLS
 const pointLightHelper = new THREE.PointLightHelper(pointLight);
@@ -335,20 +337,29 @@ scene.add(pointLightHelper, gridHelper);
 const controls = new OrbitControls(camera, renderer.domElement);
 
 //Lighting Ambient Light
-const ambientLight = new THREE.AmbientLight(0x58427d); //more of a purplish blue
-ambientLight.power = 400;
+const ambientLight = new THREE.AmbientLight(0x404040);
+//ambientLight.power = 400;
 scene.add(ambientLight, pointLight);
+
 
 
 //IMPORT MODEL..
 let loadedModel;
 const glftLoader = new GLTFLoader();
-glftLoader.load('assets/fantasy_beer_mug_low_poly/scene.gltf', (gltfScene) => {
+glftLoader.load('assets/fantasy_beer_mug_low_poly/scene.gltf', (gltfScene) => {//Beer Mug
     loadedModel = gltfScene;
     console.log(loadedModel); 
-    gltfScene.scene.position.y = 7;
     gltfScene.scene.position.x = 7;
-    gltfScene.scene.scale.set(100, 100, 100);
+    gltfScene.scene.scale.set(10, 10, 10);
+    scene.add(gltfScene.scene);
+});
+glftLoader.load('assets/stylized_low-poly_wood_table/scene.gltf', (gltfScene) => {//Table
+    loadedModel = gltfScene;
+    console.log(loadedModel); 
+
+    gltfScene.scene.position.y = -18;
+    gltfScene.scene.position.x = 1;
+    gltfScene.scene.scale.set(.1, .1, .1);
     scene.add(gltfScene.scene);
 });
 

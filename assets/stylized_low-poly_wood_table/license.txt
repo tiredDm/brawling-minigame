@@ -1,0 +1,11 @@
+Model Information:
+* title:	Stylized Low-poly Wood Table
+* source:	https://sketchfab.com/3d-models/stylized-low-poly-wood-table-f5d94d0555a14cb0901be4e43cf82ab3
+* author:	Rocco Giandomenico (https://sketchfab.com/Rocco.Giandomenico)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Stylized Low-poly Wood Table" (https://sketchfab.com/3d-models/stylized-low-poly-wood-table-f5d94d0555a14cb0901be4e43cf82ab3) by Rocco Giandomenico (https://sketchfab.com/Rocco.Giandomenico) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
