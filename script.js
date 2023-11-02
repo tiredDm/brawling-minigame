@@ -3,8 +3,9 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 //Post Processing stuff
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPixelatedPass } from 'three/addons/postprocessing/RenderPixelatedPass.js';
-
-
+//Model Importing Stuff
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+ 
 //for each winCounter.. Add Event Listener -> Event listner has div as a parameter, puts a 
 const winCounters = document.querySelectorAll('.winCounter');
 const leftSubmit = document.querySelector('.submit-button');
@@ -324,9 +325,9 @@ scene.add(d20);
 //Lighting...(Point Light)
 const pointLight = new THREE.PointLight(0xf0e65d) //0x is hexadecimal literal..
 pointLight.position.set(5,5,5)
-pointLight.power = 400; //Ok this is really important wtf
+pointLight.power = 700; //Ok this is really important wtf
 
-//HELPERS----------
+//HELPERS---------- & ORBIT CONTROLS
 const pointLightHelper = new THREE.PointLightHelper(pointLight);
 const gridHelper = new THREE.GridHelper(200,50);
 scene.add(pointLightHelper, gridHelper);
@@ -335,8 +336,21 @@ const controls = new OrbitControls(camera, renderer.domElement);
 
 //Lighting Ambient Light
 const ambientLight = new THREE.AmbientLight(0x58427d); //more of a purplish blue
+ambientLight.power = 400;
 scene.add(ambientLight, pointLight);
 
+
+//IMPORT MODEL..
+let loadedModel;
+const glftLoader = new GLTFLoader();
+glftLoader.load('assets/fantasy_beer_mug_low_poly/scene.gltf', (gltfScene) => {
+    loadedModel = gltfScene;
+    console.log(loadedModel); 
+    gltfScene.scene.position.y = 7;
+    gltfScene.scene.position.x = 7;
+    gltfScene.scene.scale.set(100, 100, 100);
+    scene.add(gltfScene.scene);
+});
 
 //Post Processing Code
 const composer = new EffectComposer (renderer);
