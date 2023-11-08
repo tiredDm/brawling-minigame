@@ -307,7 +307,7 @@ const renderer = new THREE.WebGL1Renderer({
 //set renderer pixel ratio
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
-camera.position.setZ(30);
+camera.position.setY(25);
 
 //renderer.render(scene, camera); // unnesscary code with post processing
 
@@ -342,6 +342,11 @@ const ambientLight = new THREE.AmbientLight(0x404040);
 scene.add(ambientLight, pointLight);
 
 
+//BACKGROUND-----------------
+const woodFloorTexture = new THREE.TextureLoader().load('assets/wood_floor_texture.jpg');
+//const color1 = new THREE.Color(0x4d3c39);
+//scene.background = woodFloorTexture;
+//scene.background.Color = color1;
 
 //IMPORT MODEL..
 let loadedModel;
