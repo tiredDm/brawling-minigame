@@ -5,6 +5,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPixelatedPass } from 'three/addons/postprocessing/RenderPixelatedPass.js';
 //Model Importing Stuff
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { game } from './model.js';
  
 //for each winCounter.. Add Event Listener -> Event listner has div as a parameter, puts a 
 const winCounters = document.querySelectorAll('.winCounter');
@@ -12,7 +13,8 @@ const leftSubmit = document.querySelector('.submit-button');
 const rightSubmit = document.querySelector('.r-submit-button');
 const container = document.querySelector('.container');
 const actions =   document.querySelectorAll('.action');  
-
+const roundCounter = document.querySelectorAll('.actualCounter h2');
+const save = document.querySelectorAll('.save');
 
 //Add Event Listeners to the winCounters..
 //for(let i = 0; i < 10; i++){} Technically speaking if we do the math per turn we won't need this..
@@ -28,9 +30,16 @@ const rC = document.querySelector('#r_con_modifier');
 const rAC = document.querySelector('#r_ac');
 
 let gameState = 0; //0 means no one has submitted, 1 means one person has, 2 means both has, and 3 means game over..
+let roundCount = 0;
 
-let lCurrentAction;
-let rCurrentAction;
+let lCurrentAction = 0;
+let rCurrentAction = 0;
+actions[0].classList.add('selected');
+actions[4].classList.add('selected');
+
+
+let lFS = 0;
+let rFS = 0;
 
 function addWin(points){
     //Have a version for Right and Left..
@@ -202,6 +211,8 @@ function evaluateRound(rolls){ //input array of values... then for each value do
     let lPointTotal = document.createElement('div');
     let rRollTotal = document.createElement('div');
     let rPointTotal = document.createElement('div');
+    let loser = 'left';
+
 
     //rtv is Roll Total Value
     let lRTV = Number(rolls[0])+Number(rolls[2])+Number(rolls[4]) + (Number(lBonus)*3);
@@ -211,6 +222,7 @@ function evaluateRound(rolls){ //input array of values... then for each value do
 
     if(lRTV > rRTV){
         lPT += Math.floor((lRTV - rRTV)/10);
+        loser = 'right';
     } else {
         rPT += Math.floor((rRTV - lRTV)/10);
     }
@@ -228,18 +240,23 @@ function evaluateRound(rolls){ //input array of values... then for each value do
 
 
     let endRoundButton = document.createElement('button')
-    endRoundButton.innerHTML = 'End Round'
+    endRoundButton.innerHTML = 'Failed Save'
     endRoundButton.addEventListener('click', () => {
-        finalizeRound(lPointTotal.innerHTML, rPointTotal.innerHTML);
+        finalizeRound(lPointTotal.innerHTML, rPointTotal.innerHTML, true, loser);
+    });
+    let endRoundButton2 = document.createElement('button')
+    endRoundButton2.innerHTML = 'Succeeded Save'
+    endRoundButton2.addEventListener('click', () => {
+        finalizeRound(lPointTotal.innerHTML, rPointTotal.innerHTML, false, loser);
     });
 
     //Populate End Of Round POPUP..
     let con_save = 'Con Save: ';
-    
+
     if(rPT < lPT){
-        con_save += 10+(3*lPT); 
+        con_save += 10+(3*lPT)+(3*rFS); 
     } else{
-        con_save += 10+(3*rPT);
+        con_save += 10+(3*rPT)+(3*lFS);
     }
 
     let con_save_div = document.createElement('div');
@@ -247,13 +264,27 @@ function evaluateRound(rolls){ //input array of values... then for each value do
 
     endOfRoundScreen.appendChild(con_save_div);
     endOfRoundScreen.appendChild(endRoundButton);
+    endOfRoundScreen.appendChild(endRoundButton2);
     container.appendChild(endOfRoundScreen);
 }
 
-function finalizeRound(leftPointTotal, rightPointTotal){
+function finalizeRound(leftPointTotal, rightPointTotal, failedSave, loser){
     console.log('RoundFinalized');
     /* Checks if Game Is Over */
-   
+    roundCounter[roundCount].classList.remove('currentRound');
+    roundCount++;
+    roundCounter[roundCount].classList.add('currentRound');
+
+    //failed State Stuff..
+    if(failedSave){
+        if(loser == 'left'){
+            save[lFS].classList.add('failed')
+            lFS++;
+        } else {
+            save[rFS+3].classList.add('failed')
+            rFS++;
+        }
+    }
 
     /* Adds Points for the Rounds onto the windows */
     winCounters[(gameState/2)-1].innerHTML = leftPointTotal
@@ -287,6 +318,7 @@ function endGame(){
     container.appendChild(endOfGameScreen);
 }
 
+/*
 //---------------------------THREE JS SHINENGANS-----------------------------------------------------------------------------------------------------------------------
 
 //We Need a 1. Scene ---2. Camera  ----3. Renderer
@@ -382,3 +414,10 @@ function animate(){
 }
 
 animate();
+
+
+// 
+
+game.printName();
+
+*/
